@@ -1,0 +1,217 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class TESTINGANT implements ActionListener {
+
+    private JFrame frame;
+    private JPanel loginPanel;
+    private JPanel infoPanel; 
+
+    private JLabel userLabel;
+    private JTextField userText;
+    private JLabel passwordLabel;
+    private JPasswordField passwordText;
+    private JButton loginButton;
+    private JLabel success;
+    private JLabel failed;
+    private Timer timer;
+    private JToggleButton showHideButton;
+
+    private Dimension loginPanelSize = new Dimension(350, 200); 
+    private Dimension infoPanelSize = new Dimension(800, 600); 
+
+    private JTextArea informationArea;
+
+    public TESTINGANT() {
+        frame = new JFrame("Login Page");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false); 
+
+        loginPanel = createLoginPanel(); 
+        infoPanel = createInfoPanel(); 
+
+        frame.setContentPane(loginPanel); 
+        frame.setSize(loginPanelSize); 
+        frame.setLocationRelativeTo(null); 
+    }
+
+    private JPanel createLoginPanel() {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(loginPanelSize); 
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 20)); 
+
+        userLabel = new JLabel("Username:");
+        userLabel.setPreferredSize(new Dimension(80, 25));
+        panel.add(userLabel);
+
+        userText = new JTextField(20);
+        userText.setPreferredSize(new Dimension(165, 25));
+        panel.add(userText);
+
+        passwordLabel = new JLabel("Password:");
+        passwordLabel.setPreferredSize(new Dimension(80, 25));
+        panel.add(passwordLabel);
+
+        passwordText = new JPasswordField();
+        passwordText.setPreferredSize(new Dimension(225, 25));
+        panel.add(passwordText);
+
+        showHideButton = new JToggleButton("Show/Hide");
+        showHideButton.setPreferredSize(new Dimension(100, 25));
+        showHideButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (showHideButton.isSelected()) {
+                    showPassword();
+                } else {
+                    hidePassword();
+                }
+            }
+        });
+        panel.add(showHideButton);
+
+        loginButton = new JButton("Login");
+        loginButton.setPreferredSize(new Dimension(80, 25));
+        loginButton.addActionListener(this);
+        panel.add(loginButton);
+
+        success = new JLabel("");
+        success.setPreferredSize(new Dimension(300, 25));
+        panel.add(success);
+
+        failed = new JLabel("");
+        failed.setPreferredSize(new Dimension(300, 25));
+        panel.add(failed);
+
+        return panel;
+    }
+
+    private JPanel createInfoPanel() {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(infoPanelSize); 
+        panel.setLayout(new BorderLayout()); 
+
+        JLabel infoLabel = new JLabel("Information Page", JLabel.CENTER);
+        infoLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        panel.add(infoLabel, BorderLayout.NORTH);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20)); 
+        JButton hobbiesButton = new JButton("Hobbies");
+        hobbiesButton.setPreferredSize(new Dimension(120, 30));
+        hobbiesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {               
+                showInfoMessage("Bilangel's Hobbies: Games, Music, Watching\n\nSomerado's Hobbies: Reading, Playing, Watching\n\nErsando's Hobbies: Reading, Playing, Watching\n\nCasama's Hobbies: Playing Online games, Playing Billiards, Music\n\nLeviste's Hobbies: Playing Online Games,Playing Basketball, Reading, ");
+            }
+        });
+        buttonPanel.add(hobbiesButton);
+
+        JButton contactsButton = new JButton("Contacts");
+        contactsButton.setPreferredSize(new Dimension(120, 30));
+        contactsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showInfoMessage("Bilangel's Contacts:\nEmail:jjbilangel@gmail.com\nPhone: 0994 476 5765\n\nSomerado's Contacts:\nEmail:muhayminsomerado@gmail.com\nPhone: 0992 510 9180\n\nErsando's Contacts:\nEmail: ersandojd071@gmail.com\nPhone: 0967 816 0758\n\nCasama's Contacts:\nEmail: mcasama2005@gmail.com\nPhone: 0966 893 0193\n\nLeviste's Contacts:\nEmail: leviste.vongabriel052605@gmail.com\nPhone: 0927 800 0345");
+            }
+        });
+        buttonPanel.add(contactsButton);
+
+        panel.add(buttonPanel, BorderLayout.CENTER);
+
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.setPreferredSize(new Dimension(100, 30));
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showLoginPanel(); 
+            }
+        });
+        panel.add(logoutButton, BorderLayout.SOUTH);
+
+        return panel;
+    }
+
+    private void showInfoMessage(String message) {
+        JOptionPane.showMessageDialog(frame, message);
+    }
+
+    private void showPassword() {
+        passwordText.setEchoChar((char) 0); 
+    }
+
+    private void hidePassword() {
+        passwordText.setEchoChar('*'); 
+    }
+
+    private void showInformationPanel() {
+        frame.setContentPane(infoPanel); 
+        frame.setSize(infoPanelSize); 
+        frame.revalidate(); 
+        frame.repaint(); 
+    }
+
+    private void showLoginPanel() {
+        frame.setContentPane(loginPanel); 
+        frame.setSize(loginPanelSize); 
+        frame.revalidate(); 
+        frame.repaint(); 
+
+        // Clear fields and messages
+        userText.setText("");
+        passwordText.setText("");
+        success.setText("");
+        failed.setText("");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == loginButton) {
+            String user = userText.getText();
+            String password = new String(passwordText.getPassword());
+            System.out.println(user + ", " + password);
+
+            if (user.equals("Jhay") && password.equals("rimuru")) {
+                success.setText("Login Successful!");
+                failed.setText("");
+                showInformationPanel(); 
+            } else {
+                failed.setText("Try Again");
+                success.setText("");
+                startAutoResetTimer();
+            }
+        }
+    }
+
+    private void startAutoResetTimer() {
+        if (timer != null) {
+            timer.stop();
+        }
+
+        timer = new Timer(1000, new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                userText.setText("");
+                passwordText.setText("");
+                success.setText("");
+                failed.setText("");
+                timer.stop();
+            }
+        });
+        timer.setRepeats(false); 
+        timer.start();
+    }
+
+    public void createAndShowGUI() {
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                TESTINGANT loginPage = new TESTINGANT();
+                loginPage.createAndShowGUI();
+            }
+        });
+    }
+}
